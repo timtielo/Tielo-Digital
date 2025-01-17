@@ -80,7 +80,7 @@ export function Footer() {
         
         <div className="border-t border-white/10 mt-12 pt-8 text-sm">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-white/80">&copy; 2024 Tielo Digital. Alle rechten voorbehouden. 
+            <p className="text-white/80">&copy; 2025 Tielo Digital. Alle rechten voorbehouden. 
               <Link href="/diensten/websites" className="text-white/80 hover:text-white"> Wil jij ook zo'n website?</Link> </p>
             <div className="flex space-x-4 mt-4 md:mt-0">
               <Link href="/privacy" className="text-white/80 hover:text-white">Privacy Policy</Link>
