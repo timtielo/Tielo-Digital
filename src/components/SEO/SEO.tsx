@@ -1,51 +1,56 @@
 import React from 'react';
 import { GoogleTagManager } from '../Analytics/GoogleTagManager';
+import { ContentfulSEO } from '../../lib/contentful/types/seo';
 
-export interface SEOProps {
-  title: string;
-  description: string;
-  keywords?: string[];
-  ogImage?: string;
-  ogType?: string;
-  canonical?: string;
-  noindex?: boolean;
-  nofollow?: boolean;
+interface SEOProps {
+  seo?: ContentfulSEO | null;
+  fallbackTitle?: string;
+  fallbackDescription?: string;
+  fallbackImage?: string;
 }
 
+const defaultSEO = {
+  title: 'Tielo Digital | AI & Automatisering',
+  description: 'Transformeer jouw bedrijf met AI en automatisering. Verhoog efficiency, verminder kosten en blijf voorop in innovatie met Tielo Digital.',
+  image: 'https://www.tielo-digital.nl/social/og-image.jpg'
+};
+
 export function SEO({ 
-  title, 
-  description, 
-  keywords, 
-  ogImage, 
-  ogType = 'website',
-  canonical,
-  noindex = false,
-  nofollow = false
+  seo,
+  fallbackTitle,
+  fallbackDescription,
+  fallbackImage
 }: SEOProps) {
-  const siteTitle = `${title} | Tielo Digital`;
+  const title = seo?.fields.pageTitle || fallbackTitle || defaultSEO.title;
+  const description = seo?.fields.pageDescription || fallbackDescription || defaultSEO.description;
+  const image = seo?.fields.shareImages?.[0]?.fields.file.url || fallbackImage || defaultSEO.image;
+  const canonical = seo?.fields.canonicalUrl || `https://tielo-digital.nl${window.location.pathname}`;
+  const noindex = seo?.fields.noindex ?? false;
+  const nofollow = seo?.fields.nofollow ?? false;
+  
   const robotsContent = [
     noindex ? 'noindex' : 'index',
     nofollow ? 'nofollow' : 'follow'
   ].join(', ');
-  
+
   return (
     <>
-      <title>{siteTitle}</title>
+      <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="robots" content={robotsContent} />
-      {keywords && <meta name="keywords" content={keywords.join(', ')} />}
       
-      <meta property="og:title" content={siteTitle} />
+      <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      {ogImage && <meta property="og:image" content={ogImage} />}
-      <meta property="og:type" content={ogType} />
+      <meta property="og:image" content={image.startsWith('//') ? `https:${image}` : image} />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content={canonical} />
       
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={siteTitle} />
+      <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      {ogImage && <meta name="twitter:image" content={ogImage} />}
+      <meta name="twitter:image" content={image.startsWith('//') ? `https:${image}` : image} />
       
-      {canonical && <link rel="canonical" href={canonical} />}
+      <link rel="canonical" href={canonical} />
 
       <GoogleTagManager />
     </>

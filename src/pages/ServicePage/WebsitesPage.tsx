@@ -1,5 +1,6 @@
 import React from 'react';
 import { SEO } from '../../components/SEO';
+import { usePageSEO } from '../../hooks/usePageSEO';
 import { WebsitesHero } from './WebsitesPage/components/WebsitesHero';
 import { WebsitesBenefits } from './WebsitesPage/components/WebsitesBenefits';
 import { WebsitesFeatures } from './WebsitesPage/components/WebsitesFeatures';
@@ -10,20 +11,14 @@ import { WebsitesPortfolio } from './WebsitesPage/components/WebsitesPortfolio';
 import { WebsitesCTA } from './WebsitesPage/components/WebsitesCTA';
 
 export function WebsitesPage() {
+  const { seo } = usePageSEO('websites');
+
   return (
     <div className="min-h-screen">
       <SEO 
-        title="Website Development | Professionele Websites"
-        description="Laat jouw bedrijf online groeien met een professionele website. Modern design, snelle performance en optimale conversie - wij bouwen websites die resultaat leveren."
-        keywords={[
-          'Website Development',
-          'Webdesign',
-          'SEO-Optimalisatie',
-          'Responsive Design',
-          'Maatwerk Websites'
-        ]}
-        ogType="website"
-        canonical="https://tielo-digital.nl/diensten/websites"
+        seo={seo}
+        fallbackTitle="Website Development | Professionele Websites"
+        fallbackDescription="Laat jouw bedrijf online groeien met een professionele website. Modern design, snelle performance en optimale conversie - wij bouwen websites die resultaat leveren."
       />
       <WebsitesHero />
       <WebsitesBenefits />
